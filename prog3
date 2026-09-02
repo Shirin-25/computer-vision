@@ -1,0 +1,45 @@
+import cv2
+import sys
+import os
+
+
+def threshold_grayscale(
+    image_path=r"C:\Users\Student 1\Desktop\PrarthanaCV\cancer.png",
+    threshold_value=127
+):
+    # Validate file path
+    if not os.path.isfile(image_path):
+        print(f"Error: File '{image_path}' not found.")
+        return
+
+    # Read image in grayscale mode
+    img_gray = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+
+    if img_gray is None:
+        print("Error: Unable to read image. Ensure it's a valid image file.")
+        return
+
+    # Apply binary thresholding
+    _, thresh_img = cv2.threshold(
+        img_gray,
+        threshold_value,
+        255,
+        cv2.THRESH_BINARY
+    )
+
+    # Display results
+    cv2.imshow("Original Grayscale", img_gray)
+    cv2.imshow("Thresholded Image", thresh_img)
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        # Use the default image
+        threshold_grayscale()
+    else:
+        img_path = sys.argv[1]
+        thresh_val = int(sys.argv[2]) if len(sys.argv) > 2 else 127
+        threshold_grayscale(img_path, thresh_val)
